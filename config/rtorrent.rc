@@ -1,0 +1,38 @@
+system.daemon.set = true
+
+min_peers = 40
+max_peers = 150
+
+# Same as above but for seeding completed torrents (-1 = same as downloading)
+min_peers_seed = 250
+max_peers_seed = 5000
+
+# Maximum number of simultaneous uploads per torrent.
+max_uploads = 30
+
+# Default directory to save the downloaded torrents.
+directory = /data/downloads
+
+# Session folder used by rtorrent to store current data
+session = /data/session
+
+# Stop torrents when diskspace is low.
+schedule = low_diskspace,5,60,close_low_diskspace=10240M
+
+# Port range to use for listening.
+port_range = 55965-55970
+
+# Start opening ports at a random position within the port range.
+port_random = yes
+
+# Check hash for finished torrents to confirm that the files are correct
+check_hash = yes
+
+# Allow encrypted connection and retry with encryption if it fails.
+encryption = allow_incoming,enable_retry,prefer_plaintext
+
+# Disabled DHT and peer exchange. (You can remove this if you're only using public trackers)
+dht = disable
+
+# Finally, the SCGI port rtorrent will be listening on, for communication via ruTorrent
+scgi_port = 127.0.0.1:5000

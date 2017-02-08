@@ -1,0 +1,56 @@
+--- libtorrent-0.13.2/src/download/chunk_selector.cc	2012-01-19 02:19:26.000000000 -0800
++++ libtorrent-0.13.2.new/src/download/chunk_selector.cc	2014-01-28 16:11:34.199753000 -0800
+@@ -82,7 +82,7 @@
+   m_sharedQueue.clear();
+ 
+   if (m_position == invalid_chunk)
+-    m_position = random() % size();
++    m_position = (random() % size()) / 10;
+ 
+   advance_position();
+ }
+@@ -90,6 +90,7 @@
+ uint32_t
+ ChunkSelector::find(PeerChunks* pc, __UNUSED bool highPriority) {
+   // This needs to be re-enabled.
++  int tmp;
+   if (m_position == invalid_chunk)
+     return invalid_chunk;
+ 
+@@ -103,8 +104,34 @@
+   // Randomize position on average every 16 chunks to prevent
+   // inefficient distribution with a slow seed and fast peers
+   // all arriving at the same position.
+-  if ((random() & 63) == 0) {
+-    m_position = random() % size();
++  
++  //if ((random() & 63) == 0) {
++  //  m_position = random() % size();
++    
++
++  if ((random() & 31) == 0) {
++
++    tmp = random();
++    switch( tmp % 7 ) {
++       case 0:
++       case 1:
++       case 2:
++       case 3:
++       case 4:
++         m_position = 0;
++         break;
++       case 6:
++         m_position = size() - 20;
++         if (m_position > 0) {
++           break;
++         }
++       default:
++          m_position = tmp % size();
++         break;
++    }
++
++
++
+     queue->clear();
+   }
+ 
